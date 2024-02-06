@@ -23,3 +23,14 @@ export class DateValidationService {
     };
   }
 }
+
+Within the component:-
+formInitialization():void{
+    this.invoiceForm=new FormGroup({
+      invoiceID: new FormControl(''),
+      vendorNumber:new FormControl(''),
+      poNumber:new FormControl(''),
+      fromDate:new FormControl(null),
+      toDate:new FormControl(null)
+    },[this.dateValidationService.dateRangeValidator()]);
+  }
