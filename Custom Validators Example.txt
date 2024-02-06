@@ -1,0 +1,25 @@
+import { Injectable } from '@angular/core';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+
+@Injectable()
+export class DateValidationService {
+  dateRangeValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      let invalid = false;
+      const fromDate = new Date(control.get('fromDate').value);
+      const toDate = new Date(control.get('toDate').value);
+      const monthDiff = (startingDate: Date, endingDate: Date) => {
+        let months;
+        months = (endingDate.getFullYear() - startingDate.getFullYear()) * 12;
+        months -= startingDate.getMonth();
+        months += endingDate.getMonth();
+        return months <= 0 ? 0 : months;
+      };
+      if (fromDate && toDate) {
+        const monthDifference = monthDiff(fromDate, toDate);
+        invalid = monthDifference < 6 ? false : true;
+      }
+      return invalid ? { invalidRange: { fromDate, toDate } } : null;
+    };
+  }
+}
